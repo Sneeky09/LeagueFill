@@ -1,0 +1,122 @@
+<head>
+<style>
+    body{
+            padding: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .container{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            padding: 10px;
+            width: 200px;
+            height: 300px;
+            border: thick solid #0070bb;
+            
+        }
+        .textInput{
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        #mainForm{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            
+        }
+        select{
+            height: 120%;
+        }
+        .formArea{
+            padding: 30px;
+            background-color: #5f9fff;
+            height: 100%;
+
+        }
+        #saveButton{
+            margin-top: 20px;
+            margin-left: 20px;
+            width: fit-content;
+        }
+        #roleContainer{
+            display: flex;
+            flex-direction: column;
+            
+        }
+        #output{
+            display: none;
+        }
+</style>
+</head>
+<body>
+    <h1>Anti Jungle Fill</h1>
+    <div class="allContainer">
+        <form id="mainForm">
+            <div id="playerContainer" class="formArea">
+                Player: <input class="playerInput" type="text"><br> 
+                Player: <input class="playerInput" type="text"><br> 
+                Player: <input class="playerInput" type="text"><br> 
+                Player: <input class="playerInput" type="text"><br> 
+                Player: <input class="playerInput" type="text"><br> 
+            </div>
+            <div id="roleContainer" class="formArea">
+                <strong>Roles:</strong><select name="Roles" id="roleSelect" multiple>
+                    <option value="Top">Top</option>
+                    <option value="Jungle">Jungle</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Bot">Bot</option>
+                    <option value="Support">Support</option>
+                </select>
+                <strong>Hold CTRL to select multiple roles</strong>
+            </div>
+            <input id="saveButton" type="submit" value="Get our Roles!">
+        </form>
+    </div>
+    <div id="assignedRoles">
+        <h2>Assigned Roles</h2>
+        <p id="output">Assigned roles.....</p> 
+    </div>
+    
+
+<script>
+    
+    var saveForm = document.getElementById("mainForm");
+        saveForm.addEventListener("submit",function(event){
+            event.preventDefault();
+            
+            var inputtedPlayers = document.querySelectorAll(".playerInput");
+            var players = [];
+            inputtedPlayers.forEach(player => checkEmpty(player));
+            var selectedRoleElements = document.querySelectorAll("#roleSelect option:checked");
+            var roleValues = Array.from(selectedRoleElements).map(el => el.value);
+            var assignedRoles = document.getElementById("output");
+            assignedRoles.innerHTML="";
+            
+
+            if(players.length > roleValues.length){
+                alert("The number of roles needs to be >= Players");
+                return;
+            }else{
+                for(var i=0;i<players.length;i++){
+                    var role = roleValues[Math.floor(Math.random()*roleValues.length)];
+                    assignedRoles.innerHTML += `<p> ${players[i]}: ${role}</p>`;
+                    var index = roleValues.indexOf(role);
+                    if (index > -1) {
+                        roleValues.splice(index, 1);
+                    }
+                    console.log(role);
+                }
+                
+                assignedRoles.style.display = "block";
+            }
+
+            function checkEmpty(element){
+                if(element.value != ""){
+                    players.push(element.value);
+                }
+            }
+    });
+</script>
+</body>
